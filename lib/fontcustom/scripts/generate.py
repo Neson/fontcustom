@@ -133,7 +133,8 @@ def createGlyph( name, source, code ):
         glyph.addPosSub("ligatable1",ligature)
         print "add ligature \"" + (" ".join(ligature)) + "\""
 
-for glyph, data in manifest['glyphs'].iteritems():
+for glyph in sorted(manifest['glyphs'], reverse=True):
+    data = manifest['glyphs'][glyph]
     name = createGlyph(glyph, data['source'], data['codepoint'])
 
 #
