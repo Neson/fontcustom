@@ -44,6 +44,24 @@ if options['autowidth']:
 KERNING = 15
 
 #
+# Init ligature table
+#
+
+font.addLookup("ligatable","gsub_ligature",(),(("liga",(("latn",("dflt")),)),))
+font.addLookupSubtable("ligatable","ligatable1")
+print "add lookup table"
+
+#
+# Create base ASCII glyphs
+#
+
+for code in range(0,256):
+    glyph = font.createChar(code)
+    glyph.importOutlines("vectors/blank.svg")
+    glyph.width = 512
+print "creates base glyphs"
+
+#
 # Glyphs
 #
 
@@ -74,6 +92,37 @@ def createGlyph( name, source, code ):
             glyph.round()
         else:
             glyph.width = 512
+
+        # add ligature
+        ligature = []
+        for c in name:
+            if c == "-":
+                c = "hyphen(-)"
+            elif c == "_":
+                c = "under(_)"
+            elif c == "0":
+                c = "zero(0)"
+            elif c == "1":
+                c = "one(1)"
+            elif c == "2":
+                c = "two(2)"
+            elif c == "3":
+                c = "three(3)"
+            elif c == "4":
+                c = "four(4)"
+            elif c == "5":
+                c = "five(5)"
+            elif c == "6":
+                c = "six(6)"
+            elif c == "7":
+                c = "seven(7)"
+            elif c == "8":
+                c = "height(8)"
+            elif c == "9":
+                c = "nine(9)"
+            ligature.append(c)
+        glyph.addPosSub("ligatable1",ligature)
+        print "add ligature \"" + (" ".join(ligature)) + "\""
 
 for glyph, data in manifest['glyphs'].iteritems():
     name = createGlyph(glyph, data['source'], data['codepoint'])
