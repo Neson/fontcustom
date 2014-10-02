@@ -84,9 +84,11 @@ def removeSwitchFromSvg( file ):
 
 def glyphName( c ):
     if c == "-":
-        c = "hyphen(-)"
+        #c = "hyphen(-)"
+        c = None
     elif c == "_":
-        c = "under(_)"
+        #c = "under(_)"
+        c = None
     elif c == "0":
         c = "zero(0)"
     elif c == "1":
@@ -129,7 +131,8 @@ def createGlyph( name, source, code ):
         ligature = []
         for c in name:
             c = glyphName(c)
-            ligature.append(c)
+            if c is not None:
+                ligature.append(c)
         glyph.addPosSub("ligatable1",ligature)
         print "add ligature \"" + (" ".join(ligature)) + "\""
 

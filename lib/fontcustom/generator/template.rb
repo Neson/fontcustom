@@ -36,7 +36,7 @@ module Fontcustom
         css_path = Pathname.new(@options[:output][:css]).realdirpath
         preview_path = Pathname.new(@options[:output][:preview]).realdirpath
         @font_path = File.join fonts_path.relative_path_from(css_path).to_s, name
-        @font_path_alt = if @options[:preprocessor_path].nil? 
+        @font_path_alt = if @options[:preprocessor_path].nil?
           @font_path
         elsif ! @options[:preprocessor_path] || @options[:preprocessor_path].empty?
           name
@@ -171,6 +171,10 @@ module Fontcustom
           %Q|#{@options[:css_selector].sub('{{glyph}}', name.to_s)}:before { content: "\\#{value[:codepoint].to_s(16)}"; }|
         end
         output.join "\n"
+      end
+      
+      def css_prefix
+        output = @options[:css_selector].sub("{{glyph}}", "")
       end
     end
   end

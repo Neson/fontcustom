@@ -13,7 +13,7 @@
 
 <%= glyphs %>
 
-.<%= font_name %> {
+<%= css_prefix %> {
 <%= glyph_properties %>
   -webkit-font-feature-settings: "liga";
   -moz-font-feature-settings: "liga=1";

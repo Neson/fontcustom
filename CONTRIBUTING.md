@@ -8,7 +8,6 @@ on the menu:
 * **Compass integration**
 * Base 64 encode fonts into CSS
 * Templates for LESS, stylus, etc.
-* Ligature support
 * Windows support
 * Make better use of Thor
 
