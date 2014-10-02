@@ -23,6 +23,10 @@ except ImportError:
 
 manifest = json.load(manifestfile)
 options = manifest['options']
+gempath = manifest['gem_path']
+blankpath = gempath + "/scripts/blank.svg"
+
+print "gem path is", gempath
 
 #
 # Font
@@ -57,7 +61,7 @@ print "add lookup table"
 
 for code in range(0,256):
     glyph = font.createChar(code)
-    glyph.importOutlines("vectors/blank.svg")
+    glyph.importOutlines(blankpath)
     glyph.width = 512
 print "creates base glyphs"
 
@@ -78,6 +82,34 @@ def removeSwitchFromSvg( file ):
 
     return tmpsvgfile.name
 
+def glyphName( c ):
+    if c == "-":
+        c = "hyphen(-)"
+    elif c == "_":
+        c = "under(_)"
+    elif c == "0":
+        c = "zero(0)"
+    elif c == "1":
+        c = "one(1)"
+    elif c == "2":
+        c = "two(2)"
+    elif c == "3":
+        c = "three(3)"
+    elif c == "4":
+        c = "four(4)"
+    elif c == "5":
+        c = "five(5)"
+    elif c == "6":
+        c = "six(6)"
+    elif c == "7":
+        c = "seven(7)"
+    elif c == "8":
+        c = "height(8)"
+    elif c == "9":
+        c = "nine(9)"
+
+    return c;
+
 def createGlyph( name, source, code ):
     frag, ext = os.path.splitext(source)
 
@@ -96,30 +128,7 @@ def createGlyph( name, source, code ):
         # add ligature
         ligature = []
         for c in name:
-            if c == "-":
-                c = "hyphen(-)"
-            elif c == "_":
-                c = "under(_)"
-            elif c == "0":
-                c = "zero(0)"
-            elif c == "1":
-                c = "one(1)"
-            elif c == "2":
-                c = "two(2)"
-            elif c == "3":
-                c = "three(3)"
-            elif c == "4":
-                c = "four(4)"
-            elif c == "5":
-                c = "five(5)"
-            elif c == "6":
-                c = "six(6)"
-            elif c == "7":
-                c = "seven(7)"
-            elif c == "8":
-                c = "height(8)"
-            elif c == "9":
-                c = "nine(9)"
+            c = glyphName(c)
             ligature.append(c)
         glyph.addPosSub("ligatable1",ligature)
         print "add ligature \"" + (" ".join(ligature)) + "\""
