@@ -116,6 +116,7 @@ To every glyph in the font is associated a ligature with the name of the svg fil
 "-" or "_".
 To use the ligatures you have to set the class attribute of the HTML element with the css selector
 prefix and then write the font name.
+
 For example if my css_selector is `.icon-{{glyph}}` and my svg glyph name is logo.svg you have to write
 the following code
 
