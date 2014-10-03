@@ -115,10 +115,10 @@ Custom templates have access to `@options`, `@manifest`, and the following ERB h
 To every glyph in the font is associated a ligature with the name of the svg file but the characters
 "-" or "_".
 To use the ligatures you have to set the class attribute of the HTML element with the css selector
-prefix and then write the font name.
+prefix and then write the glyph name into the element and it will be replace by the icon.
 
-For example if my css_selector is `.icon-{{glyph}}` and my svg glyph name is logo.svg you have to write
-the following code
+For example if my css_selector is `.icon-{{glyph}}` and my svg glyph name is `logo.svg` you have to
+write the following code
 
 ```
 <i class="icon">logo</i>
