@@ -43,7 +43,7 @@ fontcustom help                     # See all options
 
 To preserve options between compiles, create a configuration file with
 `fontcustom config`. This should live in the directory where you run
-all `fontcustom` commands. Each of the following has its own command 
+all `fontcustom` commands. Each of the following has its own command
 line flag (`--css-selector`, etc.). Defaults values are shown.
 
 **Basics**
@@ -87,7 +87,7 @@ css_selector: .icon-{{glyph}}         # CSS selector format (`{{glyph}}` is repl
 preprocessor_path: ""                 # Font path used in CSS proprocessor templates
                                       # Set to "" or false to use the bare font name
 
-# Custom templates should live in the `input` 
+# Custom templates should live in the `input`
 # or `input[:templates]` directory and be added
 # to `templates` as their basename:
 templates: [ preview, VectorIcons.less ]
@@ -95,7 +95,7 @@ templates: [ preview, VectorIcons.less ]
 
 Custom templates have access to `@options`, `@manifest`, and the following ERB helpers:
 
-* `font_name` 
+* `font_name`
 * `font_face`: FontSpring's [Bulletproof @font-face syntax](http://www.fontspring.com/blog/further-hardening-of-the-bulletproof-syntax)
 * `glyph_selectors`: comma-separated list of all selectors
 * `glyphs`: all selectors and their codepoint assignments (`.icon-example:before { content: "\f103"; }`)
@@ -109,6 +109,20 @@ Custom templates have access to `@options`, `@manifest`, and the following ERB h
   a 512x512 canvas with a baseline at 448.
 * Setting `autowidth` to true trims horizontal white space from each glyph. This can be much easier
   than centering dozens of SVGs by hand.
+
+### Ligatures
+
+To every glyph in the font is associated a ligature with the name of the svg file but the characters
+"-" or "_".
+To use the ligatures you have to set the class attribute of the HTML element with the css selector
+prefix and then write the font name.
+For example if my css_selector is `.icon-{{glyph}}` and my svg glyph name is logo.svg you have to write
+the following code
+
+```
+<i class="icon">logo</i>
+```
+
 
 ---
 
