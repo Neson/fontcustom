@@ -137,7 +137,7 @@ def createGlyph( name, source, code ):
             c = glyphName(c)
             if c is not None:
                 ligature.append(c)
-        glyph.addPosSub("ligatable1",ligature)
+        glyph.addPosSub("ligatable1", tuple(ligature))
         print "add ligature \"" + (" ".join(ligature)) + "\""
 
 # Add valid space glyph to avoid "unknown character" box on IE11
