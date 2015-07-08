@@ -6,7 +6,6 @@ on the menu:
 
 * **Ruby on Rails integration**
 * **Compass integration**
-* Base 64 encode fonts into CSS
 * Templates for LESS, stylus, etc.
 * Windows support
 * Make better use of Thor
@@ -46,5 +45,5 @@ Some helpful links:
 That's all there is to it. Thanks again, and please don't hesitate to reach out:
 
 [Github Issues](https://github.com/FontCustom/fontcustom/issues)<br>
-[@ezYZ](https://twitter.com/ezYZ)<br>
+[@kaizau](https://twitter.com/kaizau)<br>
 [@endtwist](https://twitter.com/endtwist)

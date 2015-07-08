@@ -1,3 +1,15 @@
+## 1.3.4 (10/11/2014)
+
+* Updates rspec tests to be compatible with rspec v3.1.6
+* Add additional metrics to make it easier to have different size icon fonts ([#175](https://github.com/FontCustom/fontcustom/pull/175))
+* Add woff data uri to generated CSS + template helper ([#182](https://github.com/FontCustom/fontcustom/pull/182))
+* Support listen v1 and v2 ([#191](https://github.com/FontCustom/fontcustom/pull/191))
+* Add multiple classes to config file ([#174](https://github.com/FontCustom/fontcustom/issues/174))
+* Don't strip "%" symbol (and other potentially valid characters) from CSS selector ([#173](https://github.com/FontCustom/fontcustom/issues/173))
+* Fix bug where custom template path appears in output filenames ([#198](https://github.com/FontCustom/fontcustom/pull/198), [#172](https://github.com/FontCustom/fontcustom/issues/172))
+* SCSS content variables like Font Awesome ([#151](https://github.com/FontCustom/fontcustom/issues/151))
+* Running compile on a folder containing directories shouldn't throw an error
+
 ## 1.3.3 (2/20/2014)
 
 * Removes ttfautohint ([#160c](https://github.com/FontCustom/fontcustom/pull/160#issuecomment-34593191))

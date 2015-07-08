@@ -1,5 +1,6 @@
 require "json"
 require "pathname"
+require "base64"
 
 module Fontcustom
   module Generator
@@ -51,9 +52,9 @@ module Fontcustom
         existing = @manifest.get :templates
         created = []
         begin
-          @options[:templates].each do |source|
+          @options[:templates].each do |template_name|
             begin
-              source = get_source_path(source)
+              source = get_source_path(template_name)
               target = get_target_path(source)
               template source, target, :verbose => false, :force => true
             end
@@ -89,7 +90,7 @@ module Fontcustom
         packaged = %w|fontcustom-preview.html fontcustom.css _fontcustom.scss _fontcustom-rails.scss|
 
         target = if @options[:output].keys.include? base.to_sym
-          File.join @options[:output][base.to_sym], source
+          File.join @options[:output][base.to_sym], base
         elsif ext && css_exts.include?(ext)
           File.join @options[:output][:css], base
         elsif source.match(/fontcustom-preview\.html/)
@@ -99,7 +100,7 @@ module Fontcustom
         end
 
         if packaged.include?(base) && @options[:font_name] != DEFAULT_OPTIONS[:font_name]
-          target.sub! DEFAULT_OPTIONS[:font_name], @options[:font_name]
+          target = File.join(File.dirname(target), File.basename(target).sub(DEFAULT_OPTIONS[:font_name], @options[:font_name]))
         end
 
         target
@@ -113,19 +114,45 @@ module Fontcustom
         @options[:font_name]
       end
 
-      def font_face(style = :normal)
-        case style
-        when :preprocessor
-          url = "font-url"
-          path = @font_path_alt
-        when :preview
-          url = "url"
-          path = @font_path_preview
+      def font_face(style = {})
+        if style.is_a?(Symbol)
+          if style == :preprocessor
+            url = "font-url"
+            path = @font_path_alt
+          elsif style == :preview
+            url = "url"
+            path = @font_path_preview
+          else
+            url = "url"
+            path = @font_path
+          end
+          say_message :warn, "`font_face(:#{style})` is deprecated. Use `font_face(url:'url', path:'path')` instead."
         else
-          url = "url"
-          path = @font_path
+          style = {:url => "url", :path => @font_path}.merge(style)
+          url = style[:url]
+          path = style[:path]
         end
-%Q|@font-face {
+
+        # Bulletproof @Font-Face <http://www.fontspring.com/blog/the-new-bulletproof-font-face-syntax>
+        # With and without Base64
+        if @options[:base64]
+          string = %Q|@font-face {
+  font-family: "#{font_name}";
+  src: #{url}("#{path}.eot?") format("embedded-opentype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "#{font_name}";
+  src: url("data:application/x-font-woff;charset=utf-8;base64,#{woff_base64}") format("woff"),
+       #{url}("#{path}.ttf") format("truetype"),
+       #{url}("#{path}.svg##{font_name}") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}|
+        else
+        string = %Q|@font-face {
   font-family: "#{font_name}";
   src: #{url}("#{path}.eot");
   src: #{url}("#{path}.eot?#iefix") format("embedded-opentype"),
@@ -134,7 +161,11 @@ module Fontcustom
        #{url}("#{path}.svg##{font_name}") format("svg");
   font-weight: normal;
   font-style: normal;
-}
+}|
+        end
+
+        # For Windows/Chrome <http://stackoverflow.com/a/19247378/1202445>
+        string << %Q|
 
 @media screen and (-webkit-min-device-pixel-ratio:0) {
   @font-face {
@@ -142,6 +173,12 @@ module Fontcustom
     src: #{url}("#{path}.svg##{font_name}") format("svg");
   }
 }|
+        string
+      end
+
+      def woff_base64
+        woff_path = File.join(@options[:output][:fonts], "#{@font_path}.woff")
+        Base64.encode64(File.binread(File.join(woff_path))).gsub("\n", "")
       end
 
       def glyph_selectors
