@@ -23,10 +23,6 @@ except ImportError:
 
 manifest = json.load(manifestfile)
 options = manifest['options']
-gempath = manifest['gem_path']
-blankpath = gempath + "/scripts/blank.svg"
-
-print "gem path is", gempath
 
 #
 # Font
@@ -58,16 +54,6 @@ def create_empty_char(f, c):
     pen = font.createChar(ord(c), c).glyphPen()
     pen.moveTo((0, 0))
     pen = None
-
-#
-# Create base ASCII glyphs
-#
-
-for code in range(0,256):
-    glyph = font.createChar(code)
-    glyph.importOutlines(blankpath)
-    glyph.width = 512
-print "creates base glyphs"
 
 #
 # Glyphs
