@@ -50,9 +50,14 @@ if options['autowidth']:
 # Init ligature table
 #
 
-font.addLookup("ligatable","gsub_ligature",(),(("liga",(("latn",("dflt")),)),))
-font.addLookupSubtable("ligatable","ligatable1")
+font.addLookup('liga', 'gsub_ligature', (), (('liga', (('latn', ('dflt')), )), ))
+font.addLookupSubtable('liga', 'liga')
 print "add lookup table"
+
+def create_empty_char(f, c):
+    pen = font.createChar(ord(c), c).glyphPen()
+    pen.moveTo((0, 0))
+    pen = None
 
 #
 # Create base ASCII glyphs
@@ -132,13 +137,11 @@ def createGlyph( name, source, code ):
                 glyph.right_side_bearing = glyph.right_side_bearing + shift
 
         # add ligature
-        ligature = []
-        for c in name:
-            c = glyphName(c)
-            if c is not None:
-                ligature.append(c)
-        glyph.addPosSub("ligatable1", tuple(str(ligature),))
-        print "add ligature \"" + (" ".join(ligature)) + "\""
+        ligaturename = str(name)  # Convert Unicode to a regular string because addPosSub doesn't work with Unicode
+		for char in ligaturename:
+			create_empty_char(f, char)
+		glyph.addPosSub('liga', tuple(str(ligaturename),))
+		print "add ligature \"" + ligaturename + "\""
 
 # Add valid space glyph to avoid "unknown character" box on IE11
 glyph = font.createChar(32)
