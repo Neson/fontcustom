@@ -131,10 +131,6 @@ def createGlyph( name, source, code ):
                 glyph.left_side_bearing = glyph.left_side_bearing - shift
                 glyph.right_side_bearing = glyph.right_side_bearing + shift
 
-        # Add valid space glyph to avoid "unknown character" box on IE11
-        glyph = font.createChar(32)
-        glyph.width = 200
-
         # add ligature
         ligature = []
         for c in name:
@@ -143,6 +139,10 @@ def createGlyph( name, source, code ):
                 ligature.append(c)
         glyph.addPosSub("ligatable1",ligature)
         print "add ligature \"" + (" ".join(ligature)) + "\""
+
+# Add valid space glyph to avoid "unknown character" box on IE11
+glyph = font.createChar(32)
+glyph.width = 200
 
 for glyph in sorted(manifest['glyphs'], reverse=True):
     data = manifest['glyphs'][glyph]
