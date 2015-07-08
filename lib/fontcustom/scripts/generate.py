@@ -138,10 +138,10 @@ def createGlyph( name, source, code ):
 
         # add ligature
         ligaturename = str(name)  # Convert Unicode to a regular string because addPosSub doesn't work with Unicode
-		for char in ligaturename:
-			create_empty_char(f, char)
-		glyph.addPosSub('liga', tuple(str(ligaturename),))
-		print "add ligature \"" + ligaturename + "\""
+        for char in ligaturename:
+                create_empty_char(f, char)
+        glyph.addPosSub('liga', tuple(str(ligaturename),))
+        print "add ligature \"" + ligaturename + "\""
 
 # Add valid space glyph to avoid "unknown character" box on IE11
 glyph = font.createChar(32)
