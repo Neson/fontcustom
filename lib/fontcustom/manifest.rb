@@ -15,7 +15,6 @@ module Fontcustom
       else
         create_manifest @cli_options
       end
-      set :gem_path, "#{Fontcustom.gem_lib}"
     end
 
     # TODO convert paths to absolute
